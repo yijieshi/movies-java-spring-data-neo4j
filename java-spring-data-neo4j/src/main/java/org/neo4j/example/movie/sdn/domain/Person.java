@@ -1,12 +1,9 @@
-package movies.spring.data.neo4j.domain;
+package org.neo4j.example.movie.sdn.domain;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -14,7 +11,6 @@ import org.neo4j.ogm.annotation.Relationship;
 /**
  * @author Mark Angrish
  */
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 @NodeEntity
 public class Person {
 
@@ -44,8 +40,16 @@ public class Person {
 		return name;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public int getBorn() {
 		return born;
+	}
+
+	public void setBorn(int born) {
+		this.born = born;
 	}
 
 	public List<Movie> getMovies() {

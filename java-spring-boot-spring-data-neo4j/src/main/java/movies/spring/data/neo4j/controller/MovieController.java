@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author Mark Angrish
  */
-@RestController("/")
+//@RestController("/")
 public class MovieController {
 
 	final MovieService movieService;

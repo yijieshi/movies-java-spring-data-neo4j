@@ -3,31 +3,57 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.neo4j.examples</groupId>
-    <artifactId>sdn4-movies</artifactId>
+    <parent>
+        <groupId>org.neo4j.examples</groupId>
+        <artifactId>neo4j-movies-sdn-ogm-examples</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>java-spring-boot-spring-data-neo4j</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>SDN4 University</name>
+    <name>Movies - Java, Spring Boot, Spring Data Neo4j</name>
     <description>Demo web project for Spring Boot using Spring Data Neo4j</description>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.3.RELEASE</version>
-    </parent>
+    <!--
+    TODO importing bom this way makes hard to override dependency, but easy allows to declare custom parent pom
+    and re-use plugin configuration
+    -->
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
-        <neo4j-ogm.version>2.1.3</neo4j-ogm.version>
-    </properties>
+    <!-- This overrides versions of dependencies defined by Spring Boot-->
+    <!-- To override version define by Spring Boot direct dependency must be declared -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <!-- Import dependency management from Spring Boot -->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.neo4j.examples</groupId>
+            <artifactId>movies-domain</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.neo4j.examples</groupId>
+            <artifactId>movies-test</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-neo4j</artifactId>
+            <version>${spring-boot.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.neo4j</groupId>
@@ -45,12 +71,32 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-rest</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring-boot.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring-boot.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.hateoas</groupId>
+            <artifactId>spring-hateoas</artifactId>
+            <version>0.24.0.BUILD-SNAPSHOT</version>
         </dependency>
 
         <!-- For use in testing -->
@@ -68,6 +114,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.8.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -75,31 +127,37 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+
+                <executions>
+                    <execution>
+                        <id>boot-start</id>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                        <phase>pre-integration-test</phase>
+                    </execution>
+
+                    <execution>
+                        <id>boot-stop</id>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                        <phase>post-integration-test</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>org.neo4j.example.movies.test.movies.hateoas.RestResourceMoviesAppTest</include>
+                    </includes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
-
-
-    <repositories>
-        <repository>
-            <id>spring-snapshots</id>
-            <name>Spring Snapshots</name>
-            <url>https://repo.spring.io/snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-snapshots</id>
-            <name>Spring Snapshots</name>
-            <url>https://repo.spring.io/snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
 
 </project>

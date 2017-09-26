@@ -1,11 +1,9 @@
-package movies.spring.data.neo4j.domain;
+package org.neo4j.example.movie.sdn.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -13,7 +11,6 @@ import org.neo4j.ogm.annotation.Relationship;
 /**
  * @author Mark Angrish
  */
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 @NodeEntity
 public class Movie {
 
@@ -50,12 +47,24 @@ public class Movie {
 		return title;
 	}
 
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	public int getReleased() {
 		return released;
 	}
 
+	public void setReleased(int released) {
+		this.released = released;
+	}
+
 	public String getTagline() {
 		return tagline;
+	}
+
+	public void setTagline(String tagline) {
+		this.tagline = tagline;
 	}
 
 	public Collection<Role> getRoles() {
@@ -64,5 +73,15 @@ public class Movie {
 
 	public void addRole(Role role) {
 		this.roles.add(role);
+	}
+
+
+	@Override
+	public String toString() {
+		return "Movie{" +
+				"id=" + id +
+				", title='" + title + '\'' +
+				", released=" + released +
+				'}';
 	}
 }

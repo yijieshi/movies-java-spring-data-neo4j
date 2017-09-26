@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.neo4j.examples</groupId>
+    <artifactId>neo4j-movies-sdn-ogm-examples</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>Movies examples root</name>
+    <description>Root project for various examples for OGM, SDN etc. on Movies domain</description>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <java.version>1.8</java.version>
+
+        <neo4j-ogm.version>3.0.0-RC1</neo4j-ogm.version>
+        <neo4j-java-driver.version>1.4.3</neo4j-java-driver.version>
+        <spring-data-neo4j.version>5.0.0.RC3</spring-data-neo4j.version>
+        <spring.version>5.0.0.RC4</spring.version>
+        <spring-boot.version>2.0.0.BUILD-SNAPSHOT</spring-boot.version>
+
+        <jackson.version>2.9.1</jackson.version>
+
+        <jetty.version>9.3.21.v20170918</jetty.version>
+        <jersey-version>2.25.1</jersey-version>
+    </properties>
+
+    <!-- Some dependencies common to all submodules -->
+    <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>21.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.25</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>2.19.1</version>
+                    <configuration>
+                        <!-- Tests from movies-test module are reused -->
+                        <dependenciesToScan>
+                            <dependency>org.neo4j.examples:movies-test</dependency>
+                        </dependenciesToScan>
+                    </configuration>
+
+                    <executions>
+                        <execution>
+                            <id>failsafe-integration-test</id>
+                            <phase>integration-test</phase>
+                            <goals>
+                                <goal>integration-test</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>failsafe-verify</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-maven-plugin</artifactId>
+                    <version>${jetty.version}</version>
+
+                    <configuration>
+                        <!--<reload>true</reload>-->
+                        <daemon>true</daemon>
+                        <scanIntervalSeconds>2</scanIntervalSeconds>
+                        <stopKey>foo</stopKey>
+                        <stopPort>9999</stopPort>
+                        <stopWait>2</stopWait>
+                    </configuration>
+                    <!-- Configuration is module specific - each module may start jetty differently -->
+
+                    <executions>
+                        <execution>
+                            <id>start-jetty</id>
+                            <goals>
+                                <goal>start</goal>
+                            </goals>
+                            <phase>pre-integration-test</phase>
+                        </execution>
+
+                        <execution>
+                            <id>stop-jetty</id>
+                            <goals>
+                                <goal>stop</goal>
+                            </goals>
+                            <phase>post-integration-test</phase>
+                        </execution>
+
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <!-- Snapshot / Milestone repositories for dependencies and plugins -->
+    <repositories>
+        <repository>
+            <id>neo4j-snapshot</id>
+            <name>Neo4j Snapshots</name>
+            <url>https://m2.neo4j.org/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+
+        <repository>
+            <id>spring-milestone</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+
+        <pluginRepository>
+            <id>spring-milestone</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <modules>
+        <module>java-ogm</module>
+        <module>java-spring-data-neo4j</module>
+        <module>java-spring-boot-spring-data-neo4j</module>
+        <module>movies-test</module>
+        <module>movies-domain</module>
+    </modules>
+</project>

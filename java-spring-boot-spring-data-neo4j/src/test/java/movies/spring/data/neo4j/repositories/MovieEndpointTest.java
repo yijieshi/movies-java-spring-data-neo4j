@@ -1,15 +1,11 @@
 package movies.spring.data.neo4j.repositories;
 
-import static org.junit.Assert.*;
-
 import java.util.Collection;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.neo4j.ogm.session.Session;
-
 import org.neo4j.example.movie.domain.Movie;
 import org.neo4j.example.movie.domain.Person;
 import org.neo4j.example.movie.domain.Role;
@@ -18,14 +14,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.neo4j.ogm.session.Session;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 /**
  * @author pdtyreus
  */
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
-public class MovieRepositoryTest {
+public class MovieEndpointTest {
 
 	@Autowired
 	private Session session;
@@ -36,7 +37,7 @@ public class MovieRepositoryTest {
 	@Autowired
 	private PersonRepository personRepository;
 
-	public MovieRepositoryTest() {
+	public MovieEndpointTest() {
 	}
 
 	@Before
