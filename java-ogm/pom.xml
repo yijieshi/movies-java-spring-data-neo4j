@@ -31,6 +31,7 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- tag::dependencies[] -->
         <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j-ogm-core</artifactId>
@@ -42,6 +43,7 @@
             <artifactId>neo4j-ogm-bolt-driver</artifactId>
             <version>${neo4j-ogm.version}</version>
         </dependency>
+        <!-- end::dependencies[] -->
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

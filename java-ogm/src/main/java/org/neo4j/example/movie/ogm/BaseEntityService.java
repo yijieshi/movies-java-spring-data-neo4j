@@ -26,6 +26,8 @@ import org.neo4j.ogm.transaction.Transaction;
 import static com.google.common.collect.Lists.newArrayList;
 
 /**
+ * Base class for entity services
+ *
  * @author Frantisek Hartman
  */
 public abstract class BaseEntityService<T> {
@@ -35,10 +37,15 @@ public abstract class BaseEntityService<T> {
     @Context
     protected SessionFactory sessionFactory;
 
-    protected BaseEntityService(Class<T> clazz) {
+    /**
+     * Constructor to be used by subclasses
+     * @param clazz class of the entity
+     */
+    BaseEntityService(Class<T> clazz) {
         this.clazz = clazz;
     }
 
+    // tag::findById[]
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -51,6 +58,7 @@ public abstract class BaseEntityService<T> {
             return entity;
         }
     }
+    // end::findById[]
 
 
     @POST
@@ -65,30 +73,6 @@ public abstract class BaseEntityService<T> {
             tx.commit();
             return entity;
         }
-    }
-
-    protected Map<String, Object> map(Object... keyValues) {
-        if (keyValues.length % 2 != 0) {
-            throw new IllegalArgumentException("Expected array of even length");
-        }
-        Map<String, Object> params = new HashMap<>();
-        for (int i = 0; i < keyValues.length; i += 2) {
-            if (!(keyValues[i] instanceof String)) {
-                throw new IllegalArgumentException("Every even element must be a String");
-            }
-            params.put((String) keyValues[i], keyValues[i + 1]);
-        }
-
-        return params;
-    }
-
-    protected static <T> T single(Iterable<T> movies) {
-        Iterator<T> it = movies.iterator();
-        T entity = it.next();
-        if (it.hasNext()) {
-            throw new IllegalStateException("Expected only 1 movie");
-        }
-        return entity;
     }
 
     @GET
@@ -128,5 +112,40 @@ public abstract class BaseEntityService<T> {
 
             tx.commit();
         }
+    }
+
+    /**
+     * Transform array of parameters to a map of parameters.
+     *
+     * Every odd element must be a String and will be used as key for the subsequent element.
+     */
+    protected Map<String, Object> params(Object... keyValues) {
+        if (keyValues.length % 2 != 0) {
+            throw new IllegalArgumentException("Expected array of even length");
+        }
+        Map<String, Object> params = new HashMap<>();
+        for (int i = 0; i < keyValues.length; i += 2) {
+            if (!(keyValues[i] instanceof String)) {
+                throw new IllegalArgumentException("Every even element must be a String");
+            }
+            params.put((String) keyValues[i], keyValues[i + 1]);
+        }
+
+        return params;
+    }
+
+    /**
+     * Returns single item from given Iterable
+     *
+     * @throws java.util.NoSuchElementException when there is no element in the Iterable
+     * @throws java.lang.IllegalStateException when there is more than one element in the Iterable
+     */
+    protected static <T> T single(Iterable<T> entities) {
+        Iterator<T> it = entities.iterator();
+        T entity = it.next();
+        if (it.hasNext()) {
+            throw new IllegalStateException("Expected only 1 entity");
+        }
+        return entity;
     }
 }

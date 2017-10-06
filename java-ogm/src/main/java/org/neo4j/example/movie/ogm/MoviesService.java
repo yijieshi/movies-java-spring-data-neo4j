@@ -30,6 +30,7 @@ public class MoviesService extends BaseEntityService<Movie> {
         logger.info("MovieService created");
     }
 
+    // tag::findByTitle[]
     @GET
     @Path("/search")
     @Produces(MediaType.APPLICATION_JSON)
@@ -38,11 +39,12 @@ public class MoviesService extends BaseEntityService<Movie> {
         Session session = sessionFactory.openSession();
         try (Transaction tx = session.beginTransaction()) {
             Movie movie = single(session.query(Movie.class, "MATCH (m:Movie) WHERE m.title = {title} RETURN m",
-                    map("title", title)));
+                    params("title", title)));
 
             tx.commit();
             return movie;
         }
     }
+    // end::findByTitle[]
 
 }

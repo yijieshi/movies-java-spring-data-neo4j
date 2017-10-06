@@ -11,6 +11,7 @@ import org.neo4j.ogm.annotation.Relationship;
 /**
  * @author Mark Angrish
  */
+// tag::movie[]
 @NodeEntity
 public class Movie {
 
@@ -25,6 +26,7 @@ public class Movie {
 
 	@Relationship(type = "ACTED_IN", direction = Relationship.INCOMING)
 	private List<Role> roles = new ArrayList<>();
+// end::movie[]
 
 	public Movie() {
 	}
@@ -84,4 +86,7 @@ public class Movie {
 				", released=" + released +
 				'}';
 	}
+
+// tag::movie[]
 }
+// end::movie[]
