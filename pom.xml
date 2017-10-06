@@ -19,9 +19,9 @@
 
         <java.version>1.8</java.version>
 
-        <neo4j-ogm.version>3.0.0-RC1</neo4j-ogm.version>
+        <neo4j-ogm.version>3.0.0</neo4j-ogm.version>
         <neo4j-java-driver.version>1.4.3</neo4j-java-driver.version>
-        <spring-data-neo4j.version>5.0.0.RC3</spring-data-neo4j.version>
+        <spring-data-neo4j.version>5.0.0.RELEASE</spring-data-neo4j.version>
         <spring.version>5.0.0.RC4</spring.version>
         <spring-boot.version>2.0.0.BUILD-SNAPSHOT</spring-boot.version>
 
