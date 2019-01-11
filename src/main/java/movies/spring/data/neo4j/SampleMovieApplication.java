@@ -6,10 +6,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-/**
- * @author Michael Hunger
- * @author Mark Angrish
- */
+
 @SpringBootApplication
 @EnableNeo4jRepositories("movies.spring.data.neo4j.repositories")
 public class SampleMovieApplication {

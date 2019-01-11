@@ -23,6 +23,8 @@ public class Person {
 	private int born;
 
 	@Relationship(type = "ACTED_IN")
+//	@Relationship(type = "REVIEWED")
+//
 	private List<Movie> movies = new ArrayList<>();
 
 	public Person() {
